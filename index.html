@@ -17,11 +17,8 @@
         }
 
         body {
-            font-family: 'Orbitron', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(45deg, #09c6f9, #045de9);
-            color: #e0e0e0;
         }
 
         header {
@@ -43,36 +40,15 @@
         }
 
         .section {
-            background-color: rgba(10, 10, 10, 0.5);
             border-radius: 10px;
             margin-bottom: 20px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border: 2px solid var(--fluorescent-green);
+            border: 2px solid ;
             display: flex;
             flex-direction: column;
         }
 
-        .btn {
-            display: block;
-            margin: 20px 0;
-            padding: 15px 30px;
-            background-color: transparent;
-            color: #00c6ff;
-            text-align: center;
-            border: 2px solid #00c6ff;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-            align-self: center;
-            font-size: 18px;
-        }
-
-
-        .btn:hover {
-            background-color: var(--fluorescent-green);
-            color: #020b2e;
-        }
 
         #sendLocationBtn,
         #sendQRDataBtn {
@@ -93,37 +69,14 @@
 
     <div class="container">
         <div class="section">
+            <h2>ファイルを送信する</h2>
+            <p>AzureFunctionsにファイルを送信します。</p>
             <form action="https://fn-yana-javaide.azurewebsites.net/api/TestSendAIMessageToBot?" method="post" enctype="multipart/form-data">
                     <!-- ファイル選択ボタン -->
-                    <input type="file" name="userfile">
+                    <input class="btn" type="file" name="userfile">
                     <!-- 送信ボタン -->
-                    <input type="submit" value="ファイルを送信">
+                    <input class="btn" type="submit" value="ファイルを送信">
             </form>
-        </div>
-        
-        <!-- ユーザープロフィール情報のセクション -->
-        <div class="section" id="userProfileSection">
-            <h2>ユーザーのプロフィール情報</h2>
-            <p>woff.getProfile() メソッドでログイン中のユーザーのプロフィール情報を取得して表示しています。</p>
-            <div id="userProfileInfo"></div>
-        </div>
-
-        <!-- 位置情報のセクション -->
-        <div class="section">
-            <h2>位置情報の取得</h2>
-            <p>Geolocation API で位置情報を取得します。</p>
-            <button class="btn" id="getLocationBtn">位置情報を取得</button>
-            <div id="locationInfo"></div>
-            <button class="btn" id="sendLocationBtn">取得した位置情報を送信</button>
-        </div>
-
-        <!-- QRコードリーダーのセクション -->
-        <div class="section">
-            <h2>QRコードをスキャンする</h2>
-            <p>woff.scanQR() メソッドで QR コードリーダーを起動して QR コードの読み込みを行います。</p>
-            <button class="btn" id="scanQRBtn">QR コードリーダーを起動</button>
-            <div id="qrResult"></div>
-            <button class="btn" id="sendQRDataBtn">取得したQRコード情報を送信</button>
         </div>
 
         <!-- アプリ終了のセクション -->
@@ -135,61 +88,6 @@
     </div>
 
     <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                document.getElementById("locationInfo").innerHTML = "このブラウザはGeolocationをサポートしていません。";
-            }
-        }
-
-        function showPosition(position) {
-            document.getElementById("locationInfo").innerHTML = "Latitude: " + position.coords.latitude +
-                ", Longitude: " + position.coords.longitude;
-            document.getElementById("sendLocationBtn").style.display = "block";
-        }
-
-        function sendLocationToWOFF() {
-            const locationInfoElem = document.getElementById("locationInfo");
-            const messageContent = locationInfoElem.textContent;
-
-            woff.sendMessage({
-                content: messageContent
-            })
-                .then(() => {
-                    alert('Sent successfully');
-                })
-                .catch((err) => {
-                    alert('error: ' + err);
-                });
-        }
-
-        function scanQRCode() {
-            woff.scanQR()
-                .then((result) => {
-                    document.getElementById("qrResult").innerHTML = "Scanned Info: " + result.value;
-                    document.getElementById("sendQRDataBtn").style.display = "block";
-                })
-                .catch((err) => {
-                    alert('error: ' + err);
-                });
-        }
-
-        function sendQRToWOFF() {
-            const qrResultElem = document.getElementById("qrResult");
-            const messageContent = qrResultElem.textContent;
-
-            woff.sendMessage({
-                content: messageContent
-            })
-                .then(() => {
-                    alert('QRコードの情報を送信しました');
-                })
-                .catch((err) => {
-                    alert('error: ' + err);
-                });
-        }
-
         document.getElementById("exitAppBtn").addEventListener("click", function () {
             woff.closeWindow();
         });

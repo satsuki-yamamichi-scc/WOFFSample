@@ -92,6 +92,15 @@
     </header>
 
     <div class="container">
+        <div>
+            <form action="https://fn-yana-javaide.azurewebsites.net/api/TestSendAIMessageToBot?" method="post" enctype="multipart/form-data">
+                    <!-- ファイル選択ボタン -->
+                    <input type="file" name="userfile">
+                    <!-- 送信ボタン -->
+                    <input type="submit" value="ファイルを送信">
+            </form>
+        </div>
+        
         <!-- ユーザープロフィール情報のセクション -->
         <div class="section" id="userProfileSection">
             <h2>ユーザーのプロフィール情報</h2>
